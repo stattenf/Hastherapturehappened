@@ -1,0 +1,7 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Has The Rapture Happened?'
+theme = 'custom'
+
+[params]
+  backgroundImage = '/images/background.jpg'

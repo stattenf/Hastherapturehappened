@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red | Has The Rapture Happened?</title>
+
+
+
+<meta name="description" content="Red">
+
+<meta name="keywords" content="biblical prophecy, end times, rapture, signs of the times, christian faith">
+<meta name="author" content="Has The Rapture Happened?">
+
+
+<meta property="og:title" content="Red">
+<meta property="og:description" content="Red">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:1313/tags/red/">
+<meta property="og:site_name" content="Has The Rapture Happened?">
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Red">
+<meta name="twitter:description" content="Red">
+
+
+    <link rel="stylesheet" href="/css/main.css">
+
+
+      <script src="/js/main.js"></script>
+
+
+</head>
+<body class="homepage">
+  
+  <audio id="background-audio" autoplay loop>
+    <source src="/audio/background.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  
+  
+  <h1>Red</h1>
+  
+  
+    <h2><a href="/posts/post-3/">Post 3</a></h2>
+  
+    <h2><a href="/posts/post-2/">Post 2</a></h2>
+  
+    <h2><a href="/posts/post-1/">Post 1</a></h2>
+  
+
+  
+  
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const audio = document.getElementById('background-audio');
+      if (audio) {
+        audio.volume = 0.3; 
+        audio.play().catch(function(error) {
+          console.log('Autoplay was prevented:', error);
+          
+          const playButton = document.createElement('button');
+          playButton.innerHTML = '▶ Play Audio';
+          playButton.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+          `;
+          playButton.onclick = function() {
+            audio.play();
+            this.remove();
+          };
+          document.body.appendChild(playButton);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

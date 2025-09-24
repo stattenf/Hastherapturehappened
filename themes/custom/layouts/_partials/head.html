@@ -1,0 +1,27 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+
+<!-- SEO Meta Tags -->
+{{ if .IsHome }}
+<meta name="description" content="Exploring biblical prophecy and end times events. Join the discussion about signs of the times and prophetic fulfillment.">
+{{ else }}
+<meta name="description" content="{{ .Summary | default .Title }}">
+{{ end }}
+<meta name="keywords" content="biblical prophecy, end times, rapture, signs of the times, christian faith">
+<meta name="author" content="{{ site.Title }}">
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ if .IsHome }}Exploring biblical prophecy and end times events{{ else }}{{ .Summary | default .Title }}{{ end }}">
+<meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ if .IsHome }}Exploring biblical prophecy and end times events{{ else }}{{ .Summary | default .Title }}{{ end }}">
+
+{{ partialCached "head/css.html" . }}
+{{ partialCached "head/js.html" . }}

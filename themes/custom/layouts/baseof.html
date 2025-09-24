@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body class="homepage">
+  <!-- Background Audio -->
+  <audio id="background-audio" autoplay loop>
+    <source src="/audio/background.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  
+  {{ block "main" . }}{{ end }}
+  
+  <!-- JavaScript for fade-in animation and audio handling -->
+  <script>
+    // Handle audio autoplay
+    document.addEventListener('DOMContentLoaded', function() {
+      const audio = document.getElementById('background-audio');
+      if (audio) {
+        audio.volume = 0.3; // Set volume to 30%
+        audio.play().catch(function(error) {
+          console.log('Autoplay was prevented:', error);
+          // Show a play button if autoplay fails
+          const playButton = document.createElement('button');
+          playButton.innerHTML = '▶ Play Audio';
+          playButton.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+          `;
+          playButton.onclick = function() {
+            audio.play();
+            this.remove();
+          };
+          document.body.appendChild(playButton);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
