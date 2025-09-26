@@ -8,10 +8,10 @@
     <h1>{{ .Site.Title | default "Has The Rapture Happened?" }}</h1>
   </div>
   
-  <!-- Recent Post (fades in after delay) -->
+  <!-- Recent Page (fades in after delay) -->
   <div class="recent-post" id="recent-post">
-    {{ $recentPost := (where site.RegularPages "Type" "posts") | first 1 }}
-    {{ range $recentPost }}
+    {{ $recentPage := (where site.RegularPages "Section" "") | first 1 }}
+    {{ range $recentPage }}
     <div class="post-content-title-style">
       <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
       <div class="post-excerpt-title-style">
@@ -19,6 +19,31 @@
       </div>
     </div>
     {{ end }}
+  </div>
+  
+  <!-- Show Post Button -->
+  <button id="show-post-btn" class="show-post-button">Prior Raptures</button>
+  
+  <!-- Floating Post Content (initially hidden) -->
+  <div id="floating-post-content" class="floating-post-content" style="display: none;">
+    <div class="floating-post-header">
+      <div class="floating-post-title-section">
+        <h3 id="floating-post-title">First Post</h3>
+        <span id="floating-post-date" class="floating-post-date"></span>
+      </div>
+      <button id="close-post-btn" class="close-post-button">✕</button>
+    </div>
+    <div class="floating-post-body">
+      <div class="floating-post-content-area">
+        <div id="floating-post-full-content" class="floating-post-full-content">
+          <!-- Full post content will be populated by JavaScript -->
+        </div>
+      </div>
+      <div class="floating-post-navigation">
+        <button id="prev-post-btn" class="nav-button prev-button">← Previous</button>
+        <button id="next-post-btn" class="nav-button next-button">Next →</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -35,6 +60,173 @@ document.addEventListener('DOMContentLoaded', function() {
       recentPost.style.opacity = '1';
       recentPost.style.transform = 'translateY(0)';
     }, 3000);
+  }
+  
+  // Post navigation data
+  const posts = [
+    {{ range (where site.RegularPages "Type" "posts") }}
+    {
+      title: {{ .Title | jsonify }},
+      url: {{ .RelPermalink | jsonify }},
+      excerpt: {{ (.Summary | default (truncate 300 .Content)) | jsonify }},
+      content: {{ .Content | jsonify }},
+      date: {{ .Date | jsonify }}
+    },
+    {{ end }}
+  ];
+  
+  let currentPostIndex = 0;
+  
+  // Debug: Log posts data
+  console.log('Posts data:', posts);
+  console.log('Button element:', document.getElementById('show-post-btn'));
+  
+  // Test button click
+  const testBtn = document.getElementById('show-post-btn');
+  if (testBtn) {
+    console.log('Button found, adding test listener');
+    testBtn.addEventListener('click', function() {
+      console.log('Button clicked!');
+    });
+  } else {
+    console.log('Button not found!');
+  }
+  
+  // Update floating post content
+  function updateFloatingPost(index) {
+    if (posts.length === 0) {
+      console.log('No posts available');
+      return;
+    }
+    
+    console.log('Updating post at index:', index, 'Post data:', posts[index]);
+    
+    const post = posts[index];
+    const titleElement = document.getElementById('floating-post-title');
+    const dateElement = document.getElementById('floating-post-date');
+    const fullContentElement = document.getElementById('floating-post-full-content');
+    const prevBtn = document.getElementById('prev-post-btn');
+    const nextBtn = document.getElementById('next-post-btn');
+    
+    // Remove extra quotes from title (define at top so it can be used throughout)
+    let cleanTitle = post.title.replace(/^"|"$/g, '');
+    
+    if (titleElement) {
+      titleElement.textContent = cleanTitle;
+    }
+    
+    if (dateElement) {
+      // Format the date nicely
+      let postDate = post.date.replace(/^"|"$/g, ''); // Remove quotes
+      let date = new Date(postDate);
+      let formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      dateElement.textContent = formattedDate;
+    }
+    
+    if (fullContentElement) {
+      // The content is already HTML from Hugo, just decode it and remove extra quotes
+      let htmlContent = post.content;
+      
+      if (htmlContent && htmlContent.trim()) {
+        // Remove leading and trailing quotes and decode Unicode escape sequences
+        htmlContent = htmlContent
+          .replace(/^"|"$/g, '') // Remove leading and trailing quotes
+          .replace(/\\u003c/g, '<')
+          .replace(/\\u003e/g, '>')
+          .replace(/\\u0026/g, '&')
+          .replace(/\\u0027/g, "'")
+          .replace(/\\u0022/g, '"')
+          .replace(/\\n/g, '\n');
+        
+        fullContentElement.innerHTML = htmlContent;
+      } else {
+        fullContentElement.innerHTML = '<p><em>No content available</em></p>';
+      }
+    }
+    
+    // Update navigation buttons
+    if (prevBtn) {
+      prevBtn.disabled = index === 0;
+      prevBtn.style.opacity = index === 0 ? '0.5' : '1';
+    }
+    if (nextBtn) {
+      nextBtn.disabled = index === posts.length - 1;
+      nextBtn.style.opacity = index === posts.length - 1 ? '0.5' : '1';
+    }
+  }
+  
+  // Handle show post button
+  const showPostBtn = document.getElementById('show-post-btn');
+  const floatingPostContent = document.getElementById('floating-post-content');
+  const closePostBtn = document.getElementById('close-post-btn');
+  
+  if (showPostBtn && floatingPostContent) {
+    showPostBtn.addEventListener('click', function() {
+      console.log('Prior Raptures button clicked');
+      console.log('Posts available:', posts.length);
+      
+      if (posts.length === 0) {
+        console.log('No posts available');
+        alert('No posts available');
+        return;
+      }
+      
+      currentPostIndex = 0; // Start with first post
+      updateFloatingPost(currentPostIndex);
+      
+      floatingPostContent.style.display = 'block';
+      floatingPostContent.style.opacity = '0';
+      floatingPostContent.style.transform = 'translateY(20px)';
+      
+      setTimeout(function() {
+        floatingPostContent.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
+        floatingPostContent.style.opacity = '1';
+        floatingPostContent.style.transform = 'translateY(0)';
+      }, 10);
+    });
+  } else {
+    console.log('Button or floating content not found:', {
+      showPostBtn: !!showPostBtn,
+      floatingPostContent: !!floatingPostContent
+    });
+  }
+  
+  if (closePostBtn && floatingPostContent) {
+    closePostBtn.addEventListener('click', function() {
+      floatingPostContent.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
+      floatingPostContent.style.opacity = '0';
+      floatingPostContent.style.transform = 'translateY(20px)';
+      
+      setTimeout(function() {
+        floatingPostContent.style.display = 'none';
+      }, 300);
+    });
+  }
+  
+  // Handle navigation buttons
+  const prevPostBtn = document.getElementById('prev-post-btn');
+  const nextPostBtn = document.getElementById('next-post-btn');
+  
+  if (prevPostBtn) {
+    prevPostBtn.addEventListener('click', function() {
+      if (currentPostIndex > 0) {
+        currentPostIndex--;
+        updateFloatingPost(currentPostIndex);
+      }
+    });
+  }
+  
+  if (nextPostBtn) {
+    nextPostBtn.addEventListener('click', function() {
+      if (currentPostIndex < posts.length - 1) {
+        currentPostIndex++;
+        updateFloatingPost(currentPostIndex);
+      }
+    });
   }
 });
 </script>
