@@ -1,6 +1,6 @@
 +++
 date = '2017-09-23T19:52:52-07:00'
-draft = true
+draft = false
 title = 'Revelations 12 Signs and Nibiru'
 +++
 
