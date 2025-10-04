@@ -159,6 +159,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
+  // Function to resize and center the floating post window
+  function resizeFloatingWindow() {
+    const floatingPostContent = document.getElementById('floating-post-content');
+    if (!floatingPostContent) return;
+    
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    // Calculate dimensions for 80% of screen height, centered horizontally
+    const targetHeight = windowHeight * 0.8;
+    const targetTop = windowHeight * 0.1; // 10% from top = 80% height
+    
+    // Set width based on screen size with some padding
+    let targetWidth;
+    if (windowWidth <= 480) {
+      targetWidth = windowWidth * 0.95; // 95% on very small screens
+    } else if (windowWidth <= 768) {
+      targetWidth = windowWidth * 0.9; // 90% on tablets
+    } else {
+      targetWidth = Math.min(windowWidth * 0.8, 800); // 80% on desktop, max 800px
+    }
+    
+    // Apply the new dimensions
+    floatingPostContent.style.width = targetWidth + 'px';
+    floatingPostContent.style.height = targetHeight + 'px';
+    floatingPostContent.style.top = targetTop + 'px';
+    floatingPostContent.style.left = '50%';
+    floatingPostContent.style.transform = 'translateX(-50%)';
+    floatingPostContent.style.maxWidth = 'none';
+    floatingPostContent.style.maxHeight = 'none';
+  }
+  
   // Handle show post button
   const showPostBtn = document.getElementById('show-post-btn');
   const floatingPostContent = document.getElementById('floating-post-content');
@@ -178,14 +210,17 @@ document.addEventListener('DOMContentLoaded', function() {
       currentPostIndex = 0; // Start with first post
       updateFloatingPost(currentPostIndex);
       
+      // Resize and center the window
+      resizeFloatingWindow();
+      
       floatingPostContent.style.display = 'block';
       floatingPostContent.style.opacity = '0';
-      floatingPostContent.style.transform = 'translateY(20px)';
+      floatingPostContent.style.transform = 'translateX(-50%) translateY(20px)';
       
       setTimeout(function() {
         floatingPostContent.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
         floatingPostContent.style.opacity = '1';
-        floatingPostContent.style.transform = 'translateY(0)';
+        floatingPostContent.style.transform = 'translateX(-50%) translateY(0)';
       }, 10);
     });
   } else {
@@ -195,11 +230,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
+  // Resize window on screen resize
+  window.addEventListener('resize', function() {
+    if (floatingPostContent && floatingPostContent.style.display === 'block') {
+      resizeFloatingWindow();
+    }
+  });
+  
   if (closePostBtn && floatingPostContent) {
     closePostBtn.addEventListener('click', function() {
       floatingPostContent.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
       floatingPostContent.style.opacity = '0';
-      floatingPostContent.style.transform = 'translateY(20px)';
+      floatingPostContent.style.transform = 'translateX(-50%) translateY(20px)';
       
       setTimeout(function() {
         floatingPostContent.style.display = 'none';
