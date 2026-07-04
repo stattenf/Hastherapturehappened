@@ -5,43 +5,98 @@
 </head>
 <body class="homepage">
   <!-- Background Audio -->
-  <audio id="background-audio" autoplay loop>
+  <audio id="background-audio" autoplay loop preload="auto" playsinline>
     <source src="/audio/background.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
+
+  <button id="audio-toggle-btn" class="audio-toggle-button" type="button" aria-label="Play music" aria-pressed="false">
+    Play Music
+  </button>
   
   {{ block "main" . }}{{ end }}
   
   <!-- JavaScript for fade-in animation and audio handling -->
   <script>
-    // Handle audio autoplay
     document.addEventListener('DOMContentLoaded', function() {
       const audio = document.getElementById('background-audio');
-      if (audio) {
-        audio.volume = 0.3; // Set volume to 30%
-        audio.play().catch(function(error) {
-          console.log('Autoplay was prevented:', error);
-          // Show a play button if autoplay fails
-          const playButton = document.createElement('button');
-          playButton.innerHTML = '▶ Play Audio';
-          playButton.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1000;
-          `;
-          playButton.onclick = function() {
-            audio.play();
-            this.remove();
-          };
-          document.body.appendChild(playButton);
+      const toggleButton = document.getElementById('audio-toggle-btn');
+
+      if (!audio || !toggleButton) {
+        return;
+      }
+
+      audio.volume = 0.3;
+      let fallbackAttached = false;
+
+      function updateAudioButton(isPlaying) {
+        toggleButton.textContent = isPlaying ? 'Pause Music' : 'Play Music';
+        toggleButton.setAttribute('aria-label', isPlaying ? 'Pause music' : 'Play music');
+        toggleButton.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+      }
+
+      function attachInteractionFallback() {
+        if (fallbackAttached) {
+          return;
+        }
+
+        fallbackAttached = true;
+
+        function resumeOnInteraction() {
+          if (!audio.paused) {
+            return;
+          }
+
+          audio.play().catch(function() {});
+        }
+
+        ['click', 'touchstart', 'keydown'].forEach(function(eventName) {
+          document.addEventListener(eventName, resumeOnInteraction, { once: true });
         });
+      }
+
+      function startAutoplay() {
+        if (!audio.paused) {
+          updateAudioButton(true);
+          return Promise.resolve();
+        }
+
+        audio.muted = true;
+
+        return audio.play().then(function() {
+          audio.muted = false;
+          updateAudioButton(true);
+        }).catch(function(error) {
+          audio.muted = false;
+          updateAudioButton(false);
+          attachInteractionFallback();
+          console.log('Autoplay was prevented:', error);
+          return Promise.reject(error);
+        });
+      }
+
+      toggleButton.addEventListener('click', function() {
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      });
+
+      audio.addEventListener('play', function() {
+        updateAudioButton(true);
+      });
+
+      audio.addEventListener('pause', function() {
+        updateAudioButton(false);
+      });
+
+      if (audio.readyState >= 2) {
+        startAutoplay();
+      } else {
+        audio.addEventListener('canplay', function() {
+          startAutoplay();
+        }, { once: true });
       }
     });
   </script>
