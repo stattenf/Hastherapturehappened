@@ -158,6 +158,15 @@ body {
   width: 100%;
 }
 
+.post-excerpt-title-style a {
+  color: red;
+  text-decoration: none;
+}
+
+.post-excerpt-title-style a:hover {
+  color: rgba(255, 0, 0, 0.8);
+}
+
 /* Show Post Button */
 .show-post-button {
   position: fixed;
@@ -196,6 +205,28 @@ body {
 }
 
 .audio-toggle-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* About Button */
+.about-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.about-button:hover {
   background: rgba(0, 0, 0, 0.9);
 }
 
@@ -380,6 +411,118 @@ body {
   box-shadow: none;
 }
 
+/* Floating About Content */
+.floating-about-content {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: #f5f5f5;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid #e0e0e0;
+  z-index: 2000;
+  max-width: 600px;
+  width: 90%;
+  height: 70vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-about-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px 15px 25px;
+  border-bottom: 2px solid #eee;
+}
+
+.floating-about-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.close-about-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.close-about-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.floating-about-body {
+  padding: 20px 25px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.floating-about-full-content {
+  color: #555;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.floating-about-full-content h1,
+.floating-about-full-content h2,
+.floating-about-full-content h3,
+.floating-about-full-content h4 {
+  color: #333;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.floating-about-full-content h1 {
+  font-size: 1.5rem;
+  margin-top: 0;
+}
+
+.floating-about-full-content h2 {
+  font-size: 1.3rem;
+}
+
+.floating-about-full-content h3 {
+  font-size: 1.1rem;
+}
+
+.floating-about-full-content p {
+  margin-bottom: 1rem;
+}
+
+.floating-about-full-content ul,
+.floating-about-full-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.floating-about-full-content li {
+  margin-bottom: 0.5rem;
+}
+
+.floating-about-full-content blockquote {
+  border-left: 4px solid #667eea;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  color: #666;
+}
+
+.floating-about-full-content hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 1.5rem 0;
+}
+
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -459,6 +602,40 @@ body {
     right: 15px;
     padding: 8px 16px;
     font-size: 13px;
+  }
+  
+  .about-button {
+    bottom: 15px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .floating-about-content {
+    width: 95%;
+    max-width: 95%;
+    height: 80vh;
+    top: 10%;
+  }
+  
+  .floating-about-header {
+    padding: 15px 15px 12px 15px;
+  }
+  
+  .floating-about-header h3 {
+    font-size: 1rem;
+  }
+  
+  .close-about-button {
+    font-size: 1.3rem;
+    padding: 3px;
+  }
+  
+  .floating-about-body {
+    padding: 15px 15px;
+  }
+  
+  .floating-about-full-content {
+    font-size: 0.85rem;
   }
 }
 
@@ -540,6 +717,47 @@ body {
     right: 12px;
     padding: 7px 14px;
     font-size: 12px;
+  }
+  
+  .about-button {
+    bottom: 12px;
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+  
+  .floating-about-content {
+    width: 96%;
+    max-width: 96%;
+    height: 85vh;
+    top: 7.5vh;
+    border-radius: 10px;
+  }
+  
+  .floating-about-header {
+    padding: 12px 12px 10px 12px;
+  }
+  
+  .floating-about-header h3 {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+  
+  .close-about-button {
+    font-size: 1.2rem;
+    padding: 2px;
+  }
+  
+  .floating-about-body {
+    padding: 12px 12px;
+  }
+  
+  .floating-about-full-content {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  
+  .floating-about-full-content p {
+    margin-bottom: 12px;
   }
 }
 

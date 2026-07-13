@@ -5,3 +5,13 @@ theme = 'custom'
 
 [params]
   backgroundImage = '/images/background.jpg'
+
+# Emit /status.json from the homepage build, sourced from content/current-prediction.md
+[outputFormats.Status]
+  mediaType = 'application/json'
+  baseName = 'status'
+  isPlainText = true
+  notAlternative = true
+
+[outputs]
+  home = ['HTML', 'Status']

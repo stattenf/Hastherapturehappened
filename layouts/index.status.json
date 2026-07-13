@@ -1,0 +1,20 @@
+{{- /* /status.json — kept in sync with content/current-prediction.md front matter */ -}}
+{{- $pred := site.GetPage "/current-prediction" -}}
+{{- if not $pred -}}
+{{- errorf "status.json: missing content/current-prediction.md" -}}
+{{- end -}}
+{{- $answer := $pred.Params.answer | default "NO" -}}
+{{- $happened := false -}}
+{{- with $pred.Params.happened -}}
+  {{- $happened = . -}}
+{{- end -}}
+{
+  "title": {{ site.Title | jsonify }},
+  "question": "Has The Rapture Happened?",
+  "answer": {{ $answer | jsonify }},
+  "happened": {{ $happened | jsonify }},
+  "updated": {{ $pred.Date.Format "2006-01-02" | jsonify }},
+  "updated_iso": {{ $pred.Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+  "url": {{ site.BaseURL | jsonify }},
+  "prediction_url": {{ $pred.Permalink | jsonify }}
+}

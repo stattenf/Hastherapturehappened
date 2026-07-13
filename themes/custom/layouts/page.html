@@ -1,7 +1,11 @@
 {{ define "main" }}
 <article class="post-page">
   <header class="post-header">
+    {{ with .Params.answer }}
+    <h1 class="rapture-answer">{{ . }}</h1>
+    {{ else }}
     <h1>{{ .Title }}</h1>
+    {{ end }}
     {{ if .Date }}
     {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
     {{ $dateHuman := .Date | time.Format ":date_long" }}
@@ -10,7 +14,10 @@
   </header>
   
   <div class="post-content">
-    {{ .Content }}
+    {{/* When answer is in front matter, skip redundant markdown body */}}
+    {{ if not .Params.answer }}
+      {{ .Content }}
+    {{ end }}
   </div>
   
   <footer class="post-footer">

@@ -8,14 +8,12 @@
     <h1>{{ .Site.Title | default "Has The Rapture Happened?" }}</h1>
   </div>
   
-  <!-- Recent Page (fades in after delay) -->
+  <!-- Current answer (from content/current-prediction.md front matter; same source as /status.json) -->
   <div class="recent-post" id="recent-post">
-    {{ $recentPage := (where site.RegularPages "Section" "") | first 1 }}
-    {{ range $recentPage }}
+    {{ with site.GetPage "/current-prediction" }}
     <div class="post-content-title-style">
-      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
       <div class="post-excerpt-title-style">
-        {{ .Summary | default (truncate 200 .Content) }}
+        <a href="{{ .RelPermalink }}">{{ .Params.answer | default "NO" }}</a>
       </div>
     </div>
     {{ end }}
@@ -23,6 +21,9 @@
   
   <!-- Show Post Button -->
   <button id="show-post-btn" class="show-post-button">Prior Raptures</button>
+  
+  <!-- About Button -->
+  <button id="show-about-btn" class="about-button">About</button>
   
   <!-- Floating Post Content (initially hidden) -->
   <div id="floating-post-content" class="floating-post-content" style="display: none;">
@@ -42,6 +43,19 @@
       <div class="floating-post-navigation">
         <button id="prev-post-btn" class="nav-button prev-button">← Previous</button>
         <button id="next-post-btn" class="nav-button next-button">Next →</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Floating About Content (initially hidden) -->
+  <div id="floating-about-content" class="floating-about-content" style="display: none;">
+    <div class="floating-about-header">
+      <h3>About This Site</h3>
+      <button id="close-about-btn" class="close-about-button">✕</button>
+    </div>
+    <div class="floating-about-body">
+      <div id="floating-about-full-content" class="floating-about-full-content">
+        <!-- About content will be populated by JavaScript -->
       </div>
     </div>
   </div>
@@ -235,7 +249,87 @@ document.addEventListener('DOMContentLoaded', function() {
     if (floatingPostContent && floatingPostContent.style.display === 'block') {
       resizeFloatingWindow();
     }
+    if (floatingAboutContent && floatingAboutContent.style.display === 'block') {
+      resizeAboutWindow();
+    }
   });
+  
+  // Function to resize and center the about window
+  function resizeAboutWindow() {
+    const floatingAboutContent = document.getElementById('floating-about-content');
+    if (!floatingAboutContent) return;
+    
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    // Calculate dimensions for 80% of screen height, centered horizontally
+    const targetHeight = windowHeight * 0.8;
+    const targetTop = windowHeight * 0.1; // 10% from top = 80% height
+    
+    // Set width based on screen size with some padding
+    let targetWidth;
+    if (windowWidth <= 480) {
+      targetWidth = windowWidth * 0.95; // 95% on very small screens
+    } else if (windowWidth <= 768) {
+      targetWidth = windowWidth * 0.9; // 90% on tablets
+    } else {
+      targetWidth = Math.min(windowWidth * 0.8, 800); // 80% on desktop, max 800px
+    }
+    
+    // Apply the new dimensions
+    floatingAboutContent.style.width = targetWidth + 'px';
+    floatingAboutContent.style.height = targetHeight + 'px';
+    floatingAboutContent.style.top = targetTop + 'px';
+    floatingAboutContent.style.left = '50%';
+    floatingAboutContent.style.transform = 'translateX(-50%)';
+    floatingAboutContent.style.maxWidth = 'none';
+    floatingAboutContent.style.maxHeight = 'none';
+  }
+  
+  // Handle About button and window
+  const showAboutBtn = document.getElementById('show-about-btn');
+  const floatingAboutContent = document.getElementById('floating-about-content');
+  const closeAboutBtn = document.getElementById('close-about-btn');
+  
+  if (showAboutBtn && floatingAboutContent) {
+    showAboutBtn.addEventListener('click', function() {
+      // Load about content from static file
+      fetch('/about-content.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('floating-about-full-content').innerHTML = html;
+        })
+        .catch(error => {
+          console.error('Error loading about content:', error);
+          document.getElementById('floating-about-full-content').innerHTML = '<p>Error loading about content.</p>';
+        });
+      
+      // Resize and center the window
+      resizeAboutWindow();
+      
+      floatingAboutContent.style.display = 'block';
+      floatingAboutContent.style.opacity = '0';
+      floatingAboutContent.style.transform = 'translateX(-50%) translateY(20px)';
+      
+      setTimeout(function() {
+        floatingAboutContent.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
+        floatingAboutContent.style.opacity = '1';
+        floatingAboutContent.style.transform = 'translateX(-50%) translateY(0)';
+      }, 10);
+    });
+  }
+  
+  if (closeAboutBtn && floatingAboutContent) {
+    closeAboutBtn.addEventListener('click', function() {
+      floatingAboutContent.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
+      floatingAboutContent.style.opacity = '0';
+      floatingAboutContent.style.transform = 'translateX(-50%) translateY(20px)';
+      
+      setTimeout(function() {
+        floatingAboutContent.style.display = 'none';
+      }, 300);
+    });
+  }
   
   if (closePostBtn && floatingPostContent) {
     closePostBtn.addEventListener('click', function() {
