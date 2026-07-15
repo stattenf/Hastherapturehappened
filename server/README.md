@@ -40,3 +40,20 @@ Names: `^[a-z0-9][a-z0-9_-]{0,63}$`
 ## Other sites
 
 Point them at the same `/counter` URL with a different `name`. No per-site PHP needed.
+
+---
+
+# Periodic rebuild (backup.stattenfield.org)
+
+`rebuild-site.sh` pulls `main`, runs Hugo, and rsyncs into `/var/www/hastherapturehappened.com`.
+
+On the server (already done once):
+
+| Path | Purpose |
+|------|---------|
+| `~/src/hastherapturehappened` | Git checkout |
+| `/usr/local/bin/rebuild-hastherapturehappened` | Rebuild script |
+| `crontab` `0 */12 * * *` | Every 12 hours |
+| `~/logs/hastherapturehappened-rebuild.log` | Cron output |
+
+Manual run: `rebuild-hastherapturehappened`
