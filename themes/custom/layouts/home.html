@@ -53,10 +53,9 @@
   </div>
   
   <!-- Floating About Content (initially hidden) -->
-  <div id="floating-about-content" class="floating-about-content" style="display: none;">
+  <div id="floating-about-content" class="floating-about-content" style="display: none;" role="dialog" aria-label="About this site">
     <div class="floating-about-header">
-      <h3>About This Site</h3>
-      <button id="close-about-btn" class="close-about-button">✕</button>
+      <button id="close-about-btn" class="close-about-button" type="button" aria-label="Close">✕</button>
     </div>
     <div class="floating-about-body">
       <div id="floating-about-full-content" class="floating-about-full-content">
@@ -254,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (floatingPostContent && floatingPostContent.style.display === 'block') {
       resizeFloatingWindow();
     }
-    if (floatingAboutContent && floatingAboutContent.style.display === 'block') {
+    if (floatingAboutContent && floatingAboutContent.style.display === 'flex') {
       resizeAboutWindow();
     }
   });
@@ -312,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Resize and center the window
       resizeAboutWindow();
       
-      floatingAboutContent.style.display = 'block';
+      floatingAboutContent.style.display = 'flex';
       floatingAboutContent.style.opacity = '0';
       floatingAboutContent.style.transform = 'translateX(-50%) translateY(20px)';
       
