@@ -1,0 +1,37 @@
+{{- /* Shared /counter endpoint; name selects which file under /var/lib/site-counters. */ -}}
+{{- with .Site.Params.counter -}}
+{{- if .enabled -}}
+<div
+  class="hit-counter"
+  id="hit-counter"
+  data-counter-url="{{ .url | default "/counter" }}"
+  data-counter-name="{{ .name | default "hastherapturehappened" }}"
+  hidden
+>
+  <span class="hit-counter-label">{{ .label | default "Visitors" }}</span>
+  <span class="hit-counter-digits" aria-live="polite">--------</span>
+</div>
+<script>
+(function () {
+  var root = document.getElementById('hit-counter');
+  if (!root) return;
+
+  var url = root.getAttribute('data-counter-url') +
+    '?name=' + encodeURIComponent(root.getAttribute('data-counter-name'));
+  var digits = root.querySelector('.hit-counter-digits');
+
+  function render(n) {
+    var s = String(Math.max(0, n | 0));
+    while (s.length < 8) s = '0' + s;
+    digits.textContent = s;
+    root.hidden = false;
+  }
+
+  fetch(url, { method: 'POST', credentials: 'same-origin', cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('counter ' + r.status); return r.json(); })
+    .then(function (data) { if (data && typeof data.count === 'number') render(data.count); })
+    .catch(function () { /* leave hidden if endpoint is down */ });
+})();
+</script>
+{{- end -}}
+{{- end -}}

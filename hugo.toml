@@ -6,6 +6,12 @@ theme = 'custom'
 [params]
   backgroundImage = '/images/background.jpg'
 
+  [params.counter]
+    enabled = true
+    name = 'hastherapturehappened'
+    url = '/counter'
+    label = 'Visitors'
+
 # Emit /status.json from the homepage build, sourced from content/current-prediction.md
 [outputFormats.Status]
   mediaType = 'application/json'
