@@ -146,8 +146,8 @@ body {
 }
 
 .post-excerpt-title-style {
-  font-size: 3.6rem;
-  font-weight: normal;
+  font-size: 6.6rem; /* ~37.5% larger than .floating-title h1 (4.8rem) */
+  font-weight: bold;
   color: red;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
   letter-spacing: 1px;
@@ -167,24 +167,32 @@ body {
   color: rgba(255, 0, 0, 0.8);
 }
 
-/* Show Post Button */
-.show-post-button {
+/* Home action buttons (Prior Raptures + About) */
+.home-actions {
   position: fixed;
   bottom: 20px;
   left: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.show-post-button,
+.about-button {
   background: rgba(0, 0, 0, 0.7);
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 1000;
   font-size: 14px;
   font-weight: bold;
   transition: background 0.3s ease;
 }
 
-.show-post-button:hover {
+.show-post-button:hover,
+.about-button:hover {
   background: rgba(0, 0, 0, 0.9);
 }
 
@@ -205,28 +213,6 @@ body {
 }
 
 .audio-toggle-button:hover {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-/* About Button */
-.about-button {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 1000;
-  font-size: 14px;
-  font-weight: bold;
-  transition: background 0.3s ease;
-}
-
-.about-button:hover {
   background: rgba(0, 0, 0, 0.9);
 }
 
@@ -537,7 +523,7 @@ body {
   }
   
   .post-excerpt-title-style {
-    font-size: 2.64rem;
+    font-size: 4.125rem; /* ~37.5% larger than title (3rem) */
     letter-spacing: 0.5px;
   }
   
@@ -590,9 +576,14 @@ body {
     font-size: 11px;
   }
   
-  .show-post-button {
+  .home-actions {
     bottom: 15px;
     left: 15px;
+    gap: 8px;
+  }
+
+  .show-post-button,
+  .about-button {
     padding: 8px 16px;
     font-size: 13px;
   }
@@ -600,12 +591,6 @@ body {
   .audio-toggle-button {
     bottom: 15px;
     right: 15px;
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-  
-  .about-button {
-    bottom: 15px;
     padding: 8px 16px;
     font-size: 13px;
   }
@@ -650,7 +635,7 @@ body {
   }
   
   .post-excerpt-title-style {
-    font-size: 2.16rem;
+    font-size: 3.3rem; /* ~37.5% larger than title (2.4rem) */
     letter-spacing: 0.3px;
   }
   
@@ -705,9 +690,14 @@ body {
     font-size: 10px;
   }
   
-  .show-post-button {
+  .home-actions {
     bottom: 12px;
     left: 12px;
+    gap: 6px;
+  }
+
+  .show-post-button,
+  .about-button {
     padding: 7px 14px;
     font-size: 12px;
   }
@@ -715,12 +705,6 @@ body {
   .audio-toggle-button {
     bottom: 12px;
     right: 12px;
-    padding: 7px 14px;
-    font-size: 12px;
-  }
-  
-  .about-button {
-    bottom: 12px;
     padding: 7px 14px;
     font-size: 12px;
   }
