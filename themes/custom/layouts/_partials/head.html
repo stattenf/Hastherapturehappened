@@ -2,26 +2,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
 
+{{- $homeDescription := site.Params.description | default "Has the rapture happened? No. A running answer plus a history of failed rapture predictions." -}}
+{{- $description := cond .IsHome $homeDescription (.Summary | default .Title) -}}
+{{- $socialImage := site.Params.socialImage | default "/images/og-default.jpg" -}}
+{{- $socialImageAbs := $socialImage | absURL -}}
+
 <!-- SEO Meta Tags -->
-{{ if .IsHome }}
-<meta name="description" content="Exploring biblical prophecy and end times events. Join the discussion about signs of the times and prophetic fulfillment.">
-{{ else }}
-<meta name="description" content="{{ .Summary | default .Title }}">
-{{ end }}
-<meta name="keywords" content="biblical prophecy, end times, rapture, signs of the times, christian faith">
+<meta name="description" content="{{ $description }}">
 <meta name="author" content="{{ site.Title }}">
 
 <!-- Open Graph Meta Tags -->
 <meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
-<meta property="og:description" content="{{ if .IsHome }}Exploring biblical prophecy and end times events{{ else }}{{ .Summary | default .Title }}{{ end }}">
+<meta property="og:description" content="{{ $description }}">
 <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:image" content="{{ $socialImageAbs }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
 <!-- Twitter Card Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
-<meta name="twitter:description" content="{{ if .IsHome }}Exploring biblical prophecy and end times events{{ else }}{{ .Summary | default .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ $description }}">
+<meta name="twitter:image" content="{{ $socialImageAbs }}">
+
+{{- with .OutputFormats.Get "RSS" }}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .Permalink }}">
+{{- end }}
 
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}

@@ -5,6 +5,9 @@ theme = 'custom'
 
 [params]
   backgroundImage = '/images/background.jpg'
+  description = 'Has the rapture happened? No. A running answer plus a history of failed rapture predictions.'
+  # 1200×630 image used for Open Graph / Twitter link previews
+  socialImage = '/images/og-default.jpg'
 
   [params.counter]
     enabled = true
@@ -20,4 +23,4 @@ theme = 'custom'
   notAlternative = true
 
 [outputs]
-  home = ['HTML', 'Status']
+  home = ['HTML', 'RSS', 'Status']
