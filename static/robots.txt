@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /counter
+Disallow: /status.json
 
 Sitemap: https://hastherapturehappened.com/sitemap.xml
