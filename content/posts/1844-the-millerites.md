@@ -1,5 +1,5 @@
 +++
-date = '1844-10-22T12:00:00-07:00'
+date = '1999-01-01'
 draft = false
 title = '1844: The Great Disappointment'
 +++
